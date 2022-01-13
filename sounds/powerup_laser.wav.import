@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/powerup_laser.wav-c319114dc2ef88c704ae1195badac89d.sample"
+
+[deps]
+
+source_file="res://sounds/powerup_laser.wav"
+dest_files=[ "res://.import/powerup_laser.wav-c319114dc2ef88c704ae1195badac89d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/wall_collided.wav-8921a63c7c5ceef14f84616d8bfd9e1b.sample"
+
+[deps]
+
+source_file="res://sounds/wall_collided.wav"
+dest_files=[ "res://.import/wall_collided.wav-8921a63c7c5ceef14f84616d8bfd9e1b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

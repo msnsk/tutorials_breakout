@@ -1,0 +1,416 @@
+[gd_scene load_steps=30 format=2]
+
+[ext_resource path="res://sprites/Paddle1.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Paddle.gd" type="Script" id=2]
+[ext_resource path="res://sounds/key_pressed.wav" type="AudioStream" id=3]
+[ext_resource path="res://scripts/PauseScreen.gd" type="Script" id=4]
+[ext_resource path="res://sounds/paddle_collided.wav" type="AudioStream" id=5]
+[ext_resource path="res://scripts/Game.gd" type="Script" id=6]
+[ext_resource path="res://PressStart2P-Regular.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://sprites/Heart3.png" type="Texture" id=8]
+[ext_resource path="res://scripts/NextScreen.gd" type="Script" id=9]
+[ext_resource path="res://sprites/Paddle3.png" type="Texture" id=10]
+[ext_resource path="res://sprites/Paddle2.png" type="Texture" id=11]
+[ext_resource path="res://sounds/wall_collided.wav" type="AudioStream" id=12]
+[ext_resource path="res://sounds/life_down.wav" type="AudioStream" id=13]
+[ext_resource path="res://sounds/powerup_slow.wav" type="AudioStream" id=14]
+[ext_resource path="res://sounds/powerup_multiple.wav" type="AudioStream" id=15]
+[ext_resource path="res://sounds/powerup_life.wav" type="AudioStream" id=16]
+[ext_resource path="res://sounds/powerup_laser.wav" type="AudioStream" id=17]
+[ext_resource path="res://sounds/powerup_expand.wav" type="AudioStream" id=18]
+[ext_resource path="res://sounds/bgm_play.ogg" type="AudioStream" id=19]
+
+[sub_resource type="DynamicFont" id=1]
+size = 12
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 12
+font_data = ExtResource( 7 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 24, 6 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "blink"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.7, 0.8, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ ExtResource( 11 ), ExtResource( 1 ), ExtResource( 11 ), ExtResource( 1 ), ExtResource( 11 ), ExtResource( 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "hit"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 10 ), ExtResource( 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Color( 0.470588, 1, 0.784314, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="DynamicFont" id=6]
+size = 32
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 10
+extra_spacing_bottom = 16
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=8]
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=9]
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=10]
+font_data = ExtResource( 7 )
+
+[node name="Game" type="Node2D"]
+script = ExtResource( 6 )
+level_num = 10
+
+[node name="HUD" type="Control" parent="."]
+margin_right = 512.0
+margin_bottom = 304.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="HUD"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LeftBox" type="VBoxContainer" parent="HUD"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 200.0
+margin_bottom = 36.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="HUD/LeftBox"]
+margin_right = 192.0
+margin_bottom = 12.0
+custom_fonts/font = SubResource( 1 )
+text = "Score: 0"
+
+[node name="Level" type="Label" parent="HUD/LeftBox"]
+margin_top = 16.0
+margin_right = 192.0
+margin_bottom = 28.0
+custom_fonts/font = SubResource( 2 )
+text = "Level: 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MidBox" type="VBoxContainer" parent="HUD"]
+margin_left = 208.0
+margin_top = 8.0
+margin_right = 392.0
+margin_bottom = 36.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HighScore" type="Label" parent="HUD/MidBox"]
+margin_right = 184.0
+margin_bottom = 12.0
+custom_fonts/font = SubResource( 1 )
+text = "H Scr: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HighLevel" type="Label" parent="HUD/MidBox"]
+margin_top = 16.0
+margin_right = 184.0
+margin_bottom = 28.0
+custom_fonts/font = SubResource( 1 )
+text = "H Lvl: 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RightBox" type="HBoxContainer" parent="HUD"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -104.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = 24.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Life1" type="TextureRect" parent="HUD/RightBox"]
+margin_right = 16.0
+margin_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 16, 16 )
+size_flags_horizontal = 12
+size_flags_vertical = 12
+texture = ExtResource( 8 )
+expand = true
+
+[node name="Life2" type="TextureRect" parent="HUD/RightBox"]
+margin_left = 20.0
+margin_right = 36.0
+margin_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 16, 16 )
+size_flags_horizontal = 12
+size_flags_vertical = 12
+texture = ExtResource( 8 )
+expand = true
+
+[node name="Life3" type="TextureRect" parent="HUD/RightBox"]
+margin_left = 40.0
+margin_right = 56.0
+margin_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 16, 16 )
+size_flags_horizontal = 12
+size_flags_vertical = 12
+texture = ExtResource( 8 )
+expand = true
+
+[node name="Life4" type="TextureRect" parent="HUD/RightBox"]
+margin_left = 60.0
+margin_right = 76.0
+margin_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 16, 16 )
+size_flags_horizontal = 12
+size_flags_vertical = 12
+texture = ExtResource( 8 )
+expand = true
+
+[node name="Life5" type="TextureRect" parent="HUD/RightBox"]
+margin_left = 80.0
+margin_right = 96.0
+margin_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 16, 16 )
+size_flags_horizontal = 12
+size_flags_vertical = 12
+texture = ExtResource( 8 )
+expand = true
+
+[node name="Paddle" type="KinematicBody2D" parent="."]
+position = Vector2( 256, 256 )
+collision_mask = 22
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Paddle"]
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle"]
+shape = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Paddle"]
+anims/blink = SubResource( 4 )
+anims/hit = SubResource( 5 )
+
+[node name="AnimationTimer" type="Timer" parent="Paddle"]
+wait_time = 4.0
+autostart = true
+
+[node name="CollideSound" type="AudioStreamPlayer" parent="Paddle"]
+stream = ExtResource( 5 )
+
+[node name="Wall" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 27
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Wall"]
+polygon = PoolVector2Array( 0, 0, 512, 0, 512, 304, 528, 304, 528, -16, -16, -16, -16, 304, 0, 304 )
+
+[node name="CollideSound" type="AudioStreamPlayer" parent="Wall"]
+stream = ExtResource( 12 )
+
+[node name="PauseScreen" type="Control" parent="."]
+pause_mode = 2
+visible = false
+margin_right = 512.0
+margin_bottom = 304.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="PauseScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.627451 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="PauseScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 40
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="PauseScreen/VBox"]
+margin_top = 88.0
+margin_right = 512.0
+margin_bottom = 120.0
+custom_fonts/font = SubResource( 6 )
+text = "Paused"
+align = 1
+uppercase = true
+
+[node name="Message" type="Label" parent="PauseScreen/VBox"]
+margin_top = 160.0
+margin_right = 512.0
+margin_bottom = 215.0
+custom_fonts/font = SubResource( 7 )
+text = "Press P to continue.
+Press Q to back to start menu.."
+align = 1
+
+[node name="PauseKeySound" type="AudioStreamPlayer" parent="PauseScreen"]
+stream = ExtResource( 3 )
+
+[node name="NextScreen" type="Control" parent="."]
+pause_mode = 2
+visible = false
+margin_right = 512.0
+margin_bottom = 304.0
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="NextScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0627451, 0.431373, 0.819608, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="NextScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 24
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level" type="Label" parent="NextScreen/VBox"]
+margin_top = 100.0
+margin_right = 512.0
+margin_bottom = 116.0
+custom_fonts/font = SubResource( 8 )
+text = "Level: 1"
+align = 1
+
+[node name="Score" type="Label" parent="NextScreen/VBox"]
+margin_top = 140.0
+margin_right = 512.0
+margin_bottom = 156.0
+custom_fonts/font = SubResource( 9 )
+text = "Score: 0"
+align = 1
+
+[node name="HBox" type="HBoxContainer" parent="NextScreen/VBox"]
+margin_top = 180.0
+margin_right = 512.0
+margin_bottom = 204.0
+custom_constants/separation = 12
+alignment = 1
+
+[node name="HeartImage" type="TextureRect" parent="NextScreen/VBox/HBox"]
+margin_left = 214.0
+margin_right = 238.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 24, 24 )
+texture = ExtResource( 8 )
+expand = true
+
+[node name="Life" type="Label" parent="NextScreen/VBox/HBox"]
+margin_left = 250.0
+margin_top = 4.0
+margin_right = 298.0
+margin_bottom = 20.0
+custom_fonts/font = SubResource( 10 )
+text = "x 3"
+
+[node name="LifeDownSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = 10.0
+
+[node name="SlowCollideSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+
+[node name="ExpandCollideSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )
+
+[node name="MultipleCollideSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
+
+[node name="LaserCollideSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 17 )
+
+[node name="LifeCollideSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+
+[node name="PlayBGM" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 19 )
+autoplay = true
+
+[connection signal="timeout" from="Paddle/AnimationTimer" to="Paddle" method="_on_AnimationTimer_timeout"]
+[connection signal="visibility_changed" from="PauseScreen" to="." method="_on_PauseScreen_visibility_changed"]
